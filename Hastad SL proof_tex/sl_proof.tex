@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{todonotes}
+
+\usepackage{amsthm}
+\usepackage{amssymb}
+
+\input{macros.tex}
+
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\Rp}{\mathcal{R}_p}
+
+
+\begin{document}
+
+\begin{definition}[Downward closed set of restrictions]
+	\label{def: downward closure}
+	A set of restrictions $\calF$ is called downward closed if whenever $\rho \in \calF$ 
+	and $stars(\rho') \subseteq stars(\rho)$, $\rho' \in \calF$. 
+\end{definition}
+    
+\begin{lemma}
+	\label{lem: downclosure intersection}
+    Let $\calF$,$\calF'$ be two downward closed subsets of restrictions, then $\calF \cap \calF'$ 
+    is also downward closed.  
+\end{lemma}
+
+\section{Hastad's proof of SL}
+
+\begin{lemma}[Switching lemma]
+	\label{lem: hastad switching lemma}    
+    Let $f$ be computed by a depth 2 circuit of bottom fan-in $k$. Let $\calF$ be a downward-closed 
+    set of restrictions from $\Rp$. Let $depth(f)$ denote the minimum depth of a decision-tree 
+    computing $f$. 
+	$$\prob{\rho}{depth(f)>s|\rho \in \calF} \leq (5pk)^s.$$
+\end{lemma}
+    
+\begin{theorem}[Criticality of bounded bottom fan-in CNF/DNF]
+	The criticality of  depth 2 circuits with bottom fan-in $k$ is $k$.  
+\end{theorem}
+    
+\begin{proof}[Proof of lemma \ref{lem: hastad switching lemma}]
+	Without loss of generality, assume $f$ is a CNF, i.e., $f$ can be written as 
+	$$f = \wedge_{i=1}^m C_i$$
+	where each $C_i$ is disjunction of at most $t$ literals.The proof is by induction on $m$.        
+		        
+	The analysis can be divided into two cases depending on whether $\rho$ sets $C_1$ to 1. 
+	Let us for the sake of convenience, assume that $C_1$ is a disjunction of the variables 
+	$x_1,\ldots ,x_{t_o}$ where $t_0 \leq t$. We can bound the probability of the lemma by the max of 
+	following two probabilites
+		        
+	\begin{equation}
+		\label{eq: C1 equiv 1}
+		\prob{\rho}{depth(f)>s|\rho \in \calF \wedge C_1|_\rho \equiv 1}
+	\end{equation}
+	and 
+	\begin{equation}
+		\label{eq: C_1 not equiv 1}
+		\prob{\rho}{depth(f)>s|\rho \in \calF \wedge C_1|_\rho \not\equiv 1}
+	\end{equation}
+		        
+    The first term is taken care of by induction applied to $f$ without its first clause(and thus has 
+    at most m-1 cluases).  $\cbra{\rho| C_1|_\rho \equiv 1}$ is a downward closed set and hence by 
+    lemma \ref{lem: downclosure intersection}, the conditioning is of the right form. 
+		        
+    In the second term however, $\cbra{\rho| C_1|_\rho \not\equiv 1}$ is not a downward closed set 
+    of restrictions. Therefore bounding in this case needs a bit more work.  
+                
+    
+\end{proof}
+
+\end{document}
